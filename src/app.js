@@ -1,17 +1,16 @@
 const express = require('express');
 const helmet = require('helmet');
-const bodyParser = require('body-parser');
+const loadRouters = require('./routers');
+const errorHandlers = require('./error-handlers');
 
 const app = express();
 
 // Global middlewares.
 app.use(helmet());
-app.use(bodyParser.json());
 
-// Basic ping/pong endpoint (health check).
-app.get('/ping', (req, res) => {
-  res.json({ pong: true });
-});
+// Load routers.
+loadRouters(app);
+errorHandlers(app);
 
 // Run the app
 const port = process.env.PORT || 8101;
