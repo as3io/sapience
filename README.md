@@ -3,75 +3,76 @@ Sapience
 Event tracking engine.
 ---
 
-## Event: Action, Entity, Identity, and Source
-What was performed (Action), Who performed it (Identity), Where was it performed (Source),
-[Zone, Base and Name: The Entity Namespace](http://senecajs.org/docs/tutorials/understanding-data-entities.html#zone-base-and-name-the-entity-namespace)
+## Events: Action, Entity, User, and Context
+- *What* was the _Action_ performed on (*Entity*)
+- *Who* performed the _Action_ (*User*)
+- *Where* was the _Action_ performed (*Context*),
 
-May need additional context data.
-For example, ads can be requested with a key/value pair context of custom variables.
-
-### Examples
-Tenant: Vehicle Service Pros
-
+### The Entity and User Namespace
+Used for the *What* of the event, as well as the *Who*.
+Provides a standardized way of namespacing and grouping entities. This methods was drawn from the [Zone, Base and Name: The Entity Namespace](http://senecajs.org/docs/tutorials/understanding-data-entities.html#zone-base-and-name-the-entity-namespace) concept found within SenecaJS.
 ```js
+/**
+ * The namespace object. Used by entity and user entries.
+ * Property values only support alphanumeric + dash characters,
+ * and will be converted if not properly formatted.
+ */
 {
-  a: 'view',
-  e: {
-    id: '10124317',
-    ns: { // 5b
-      // Values for each should only support alphanumeric + dash characters.
-      n: 'content', // The primary name of the entity
-      b: 'base-platform', // Group name for entities that “belong together.”
-      z: 'scomm-vspc', // Name for a data set belonging to a business entity, geography, or customer.
-    },
-    cx: {
-
-    }
-  },
-  u: {
-    id: 'oidhf03yrhiwe',
-    ns: { // 21b
-      n: 'customer',
-      b: 'omeda',
-      z: 'vsp',
-    },
-  },
-  s: {
-
-  },
+  n: 'model-name', // Name: the primary name of the entity
+  b: 'some-grouping', // Base: group name for entities that “belong together.”
+  z: 'some-tenant', // Zone: name for a data set belonging to a business entity, geography, or customer.
 }
-// VSP in Base3/Merrick
+// The stringified namespace would be: some-tenant/some-grouping/model-name.
+// Empty (null, undefined, !str.length, etc), will be removed.
+// Any empty values will be replaced with a `-` character within the stringified namespace.
+
+/**
+ * Represents the identifier and namespace for a Base Platform (Base4) Content entity.
+ */
 {
-  id: '10124317',
-  namespace: {
-    // Values for each should only support alphanumeric + dash characters.
-    name: 'content', // The primary name of the entity
-    base: 'merrick', // Group name for entities that “belong together.”
-    zone: 'cygnus-vspc', // Name for a data set belonging to a business entity, geography, or customer.
-  }
+  id: '10124317', // A stringified entity identifier.
+  ns: { n: 'content', b: 'base-platform' z: 'scomm-vspc' },
 }
-// VSP in Base4
+
+/**
+ * Represents the identifier and namespace for a User,
+ * In this case, an Omeda customer.
+ */
 {
-  id: '10124317',
-  namespace: {
-    // Values for each should only support alphanumeric + dash characters.
-    name: 'content', // The primary name of the entity
-    base: 'base-platform', // Group name for entities that “belong together.”
-    zone: 'scomm-vspc', // Name for a data set belonging to a business entity, geography, or customer.
-  }
+  id: '1011762928', // A stringified user identifier.
+  ns: { n: 'customer' b: 'omeda' z: 'vsp' },
 }
 ```
+#### Examples
+
+### The Event Context
+#### Examples
+
+### Putting it all Together
+```js
+{
+  act: 'view',
+  ent: {
+    id: '10124317',
+    ns: { n: 'content', b: 'base-platform', z: 'scomm-vspc' },
+  },
+  user: {
+    id: 'oidhf03yrhiwe',
+    ns: { n: 'customer', b: 'omeda', z: 'vsp' },
+  },
+  ctxt: { }, // @todo Should this contain related entities? Custom key/values? Both?
+}
+```
+---
 
 ## Tenant Structure
-Similar to Auth0, with a "touch" of Google Analytics.
 1. A user account is created.
 2. An owning user account can create a new tenant (e.g. AC Business Media).
 3. Owners can invite other users to manage the tenant.
-4. Each tenant can have mutiple workspaces, with an application (e.g. ForConstructionPros [Website])
-5. Data is then segmented per workspace (or per application?).
-Hierachy:
-Tenant -> Workspace -> Application (Users live at the Tenant level)
-Compared to GA: Account -> Property -> View
+4. Each tenant can have mutiple workspaces (e.g. For Construction Pros, Food Logistics, et cetera).
+5. Data is then segmented per workspace using a safe stringified key.
+7. Each workspace then esablishes (API) clients that can write to the database.
+  - Each client has a potential format, such as "web," "native," etc.
 ---
 
 ## Root Endpoints / Routers
