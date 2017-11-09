@@ -1,15 +1,12 @@
-Sapience
-========
-Event tracking engine.
----
+# Sapience
 
 ## Events: Action, Entity, User, and Context
-- *What* was the _Action_ performed on (*Entity*)
-- *Who* performed the _Action_ (*User*)
-- *Where* was the _Action_ performed (*Context*),
+- **What** was the _Action_ performed on (**Entity**)
+- **Who** performed the _Action_ (**User**)
+- **Where** was the _Action_ performed (**Context**),
 
 ### The Entity and User Namespace
-Used for the *What* of the event, as well as the *Who*.
+Used for the **What** of the event, as well as the *Who*.
 Provides a standardized way of namespacing and grouping entities. This methods was drawn from the [Zone, Base and Name: The Entity Namespace](http://senecajs.org/docs/tutorials/understanding-data-entities.html#zone-base-and-name-the-entity-namespace) concept found within SenecaJS.
 ```js
 /**
