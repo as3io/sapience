@@ -22,7 +22,7 @@ module.exports = compose({
     db(name, options) {
       return this.connect().then(db => db.db(name, options));
     },
-    collection(dbName, collName, options) {
+    coll(dbName, collName, options) {
       return this.db(dbName).then(db => db.collectionAsync(collName, options));
     },
     connect() {

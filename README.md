@@ -73,6 +73,32 @@ Provides a standardized way of namespacing and grouping entities. This methods w
 5. Data is then segmented per workspace using a safe stringified key.
 7. Each workspace then esablishes (API) clients that can write to the database.
   - Each client has a potential format, such as "web," "native," etc.
+
+### Model Examples
+```js
+// TENANT
+{
+  _id: ObjectId("5a04c2a43b92e9ec9e55c690"),
+  name: 'AC Business Media',
+  key: 'acbm', // alphanumeric with dashes, max length of 26, unique, cannot be empty
+}
+// WORKSPACE
+{
+  _id: ObjectId("5a04c2c82e34dd04082fc413"),
+  name: 'For Construction Pros',
+  key: 'fcp', // alphanumeric with dashes, max length of 26, unique per tenant, cannot be empty
+  tenant: ObjectId("5a04c2a43b92e9ec9e55c690"), // cannot be empty
+}
+// CLIENT
+{
+  _id: ObjectId("5a04c2e82e34dd04082fc414"),
+  name: 'Some Foo Client',
+  publicKey: '3c72e3d1-8d02-4633-8958-02f03a9f070c',
+  origins: [],
+  workspace: ObjectId("5a04c2c82e34dd04082fc413"),
+  namespace: 'acbm-fcp', // Auto-updates based on tenant and workspace.
+}
+```
 ---
 
 ## Root Endpoints / Routers
