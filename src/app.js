@@ -2,6 +2,11 @@ const express = require('express');
 const helmet = require('helmet');
 const loadRouters = require('./routers');
 const errorHandlers = require('./error-handlers');
+const mongodb = require('./mongodb');
+const pkg = require('../package.json');
+
+// Connect to database.
+mongodb.use('default', { url: 'mongodb://localhost:27017/sapience', options: { w: 0, j: false, appname: pkg.name }, connect: true });
 
 const app = express();
 
