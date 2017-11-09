@@ -1,17 +1,21 @@
 const express = require('express');
 const helmet = require('helmet');
-const bodyParser = require('body-parser');
+const loadRouters = require('./routers');
+const errorHandlers = require('./error-handlers');
+const mongodb = require('./mongodb');
+const pkg = require('../package.json');
+
+// Connect to database.
+mongodb.use('default', { url: 'mongodb://localhost:27017/sapience', options: { w: 0, j: false, appname: pkg.name }, connect: true });
 
 const app = express();
 
 // Global middlewares.
 app.use(helmet());
-app.use(bodyParser.json());
 
-// Basic ping/pong endpoint (health check).
-app.get('/ping', (req, res) => {
-  res.json({ pong: true });
-});
+// Load routers.
+loadRouters(app);
+errorHandlers(app);
 
 // Run the app
 const port = process.env.PORT || 8101;
