@@ -1,4 +1,4 @@
-const compose = require('stampit');
+const compose = require('@stamp/it');
 const mongodb = require('../mongodb');
 
 const factory = compose({
