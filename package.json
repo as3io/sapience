@@ -17,6 +17,7 @@
     "gulp": "^3.9.1"
   },
   "dependencies": {
+    "@stamp/it": "^1.0.1",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "crawler-user-agents": "https://github.com/monperrus/crawler-user-agents.git#master",
@@ -24,6 +25,6 @@
     "helmet": "^3.9.0",
     "http-errors": "^1.6.2",
     "mongodb": "^2.2.33",
-    "stampit": "^4.0.1"
+    "no-case": "^2.3.2"
   }
 }

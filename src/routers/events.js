@@ -6,11 +6,11 @@ const EventModel = require('../models/event');
 Router.use(bodyParser.json());
 Router.use(tenantLoader());
 
-Router.route('/:action').post((req, res) => {
-  const { action } = req.params;
-  const { entity, user } = req.body;
+Router.route('/:act').post((req, res) => {
+  const { act } = req.params;
+  const { ent, usr } = req.body;
 
-  const event = EventModel({ action, entity, user });
+  const event = EventModel({ act, ent, usr });
   res.json(event);
 });
 

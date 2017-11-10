@@ -113,3 +113,12 @@ Provides a standardized way of namespacing and grouping entities. This methods w
     - Can setup click trackers and event beacons
 - Health Check `/ping`
   - Open Endpoint
+
+## Database Structure
+Database naming convention: `sap-[tenant]-[workspace]`
+Collections:
+- Ephemeral Events: `events`
+  - Capped with a TTL index.
+- Aggregated Events
+- Session Aggregation
+- Entities

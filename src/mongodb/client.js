@@ -1,6 +1,6 @@
 const MongoDb = require('mongodb');
 const Promise = require('bluebird');
-const compose = require('stampit');
+const compose = require('@stamp/it');
 const p = require('../privates')();
 
 Promise.promisifyAll(MongoDb);

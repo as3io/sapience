@@ -2,6 +2,38 @@
 # yarn lockfile v1
 
 
+"@stamp/compose@^1.0.0":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@stamp/compose/-/compose-1.0.1.tgz#0b04bbe243ee1b16635c161d7636549fb54f9868"
+  dependencies:
+    "@stamp/core" "^1.0.0"
+    "@stamp/is" "^0.1.2"
+
+"@stamp/core@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@stamp/core/-/core-1.0.0.tgz#52ae885c9fdeed04bc9fd3752410d86f22079c1f"
+  dependencies:
+    "@stamp/is" "^0.1.2"
+
+"@stamp/is@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@stamp/is/-/is-0.1.2.tgz#5a97ed8e8285f2930ec09846f5107a82856d77e0"
+
+"@stamp/it@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@stamp/it/-/it-1.0.1.tgz#feacaee0300e516d7bac399d80e2cd7c9cc6d8c7"
+  dependencies:
+    "@stamp/compose" "^1.0.0"
+    "@stamp/core" "^1.0.0"
+    "@stamp/is" "^0.1.2"
+    "@stamp/shortcut" "^1.0.1"
+
+"@stamp/shortcut@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@stamp/shortcut/-/shortcut-1.0.1.tgz#0f860e87be496cb1c81fa35aea96ead768f70dab"
+  dependencies:
+    "@stamp/compose" "^1.0.0"
+
 accepts@~1.3.4:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/accepts/-/accepts-1.3.4.tgz#86246758c7dd6d21a6474ff084a4740ec05eb21f"
@@ -1438,6 +1470,10 @@ lodash@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-1.0.2.tgz#8f57560c83b59fc270bd3d561b690043430e2551"
 
+lower-case@^1.1.1:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/lower-case/-/lower-case-1.1.4.tgz#9a2cabd1b9e8e0ae993a4bf7d5875c39c42e8eac"
+
 lru-cache@2:
   version "2.7.3"
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-2.7.3.tgz#6d4524e8b955f95d4f5b58851ce21dd72fb4e952"
@@ -1574,6 +1610,12 @@ natural-compare@^1.4.0:
 negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
+
+no-case@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/no-case/-/no-case-2.3.2.tgz#60b813396be39b3f1288a4c1ed5d1e7d28b464ac"
+  dependencies:
+    lower-case "^1.1.1"
 
 nocache@2.0.0:
   version "2.0.0"
@@ -2094,10 +2136,6 @@ spdx-license-ids@^1.0.2:
 sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
-
-stampit@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/stampit/-/stampit-4.0.1.tgz#17b17f15fe7f28b5a945a29b5e910bccf4155445"
 
 "statuses@>= 1.3.1 < 2":
   version "1.4.0"
