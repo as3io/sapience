@@ -11,6 +11,7 @@ module.exports = compose({
    */
   init({ id, ns }) {
     this.id = castAsString(id);
-    this.ns = createModel(ns, Namespace);
+    const namespace = typeof ns === 'string' ? Namespace.fromString(ns) : ns;
+    this.ns = createModel(namespace, Namespace);
   },
 });

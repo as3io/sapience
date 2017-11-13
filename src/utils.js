@@ -10,5 +10,6 @@ exports.castAsString = (v) => {
 
 exports.castAsDasherized = (v) => {
   const cast = this.castAsString(v);
-  return cast ? noCase(cast, null, '-') : cast;
+  const val = cast ? noCase(cast, null, '-') : cast;
+  return val || undefined;
 };
