@@ -38,7 +38,8 @@ const handleEvent = (req, res) => {
   const bot = botDetector(req.get('User-Agent'));
   if (!bot.detected) {
     // Persist the event.
-    event.save();
+    // @todo Add a catch here. Should the response only be handled on success?
+    event.save(res.locals.db);
   } else {
     // Log the bot activity?
   }

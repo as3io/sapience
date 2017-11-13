@@ -2,7 +2,7 @@ const compose = require('@stamp/it');
 const httpError = require('http-errors');
 const { ObjectID } = require('mongodb');
 const Entity = require('./entity');
-const { createModel, castAsString } = require('../utils');
+const { createModel, castAsString, prepareForMongo } = require('../utils');
 
 module.exports = compose({
   /**
@@ -26,9 +26,28 @@ module.exports = compose({
     this.usr = createModel(usr, Entity);
   },
   methods: {
-    save() {
+    /**
+     * Saves the event to the database.
+     *
+     * @param {*} db
+     * @returns {Promise}
+     */
+    save(db) {
       this.validate();
+      return db.collection('events').insertOne(this.toDb());
     },
+
+    /**
+     * Converts the event to database format.
+     *
+     * @returns {object}
+     */
+    toDb() {
+      const obj = { ...this, _id: this.id };
+      delete obj.id;
+      return prepareForMongo(obj);
+    },
+
     /**
      * Validates the event.
      * Requires an identifier (`id`), an action (`act`), a date (`d`) and a valid entity (`ent`).
