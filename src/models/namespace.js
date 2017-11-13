@@ -1,4 +1,5 @@
 const compose = require('@stamp/it');
+const httpError = require('http-errors');
 const { castAsDasherized } = require('../utils');
 
 const { assign } = Object;
@@ -19,6 +20,9 @@ module.exports = compose({
   methods: {
     toString() {
       return [this.z || '-', this.b || '-', this.n || '-'].join('/');
+    },
+    validate() {
+      if (!this.n) throw httpError(422, 'Entity namespaces must contain at least the `name` property.');
     },
   },
   statics: {

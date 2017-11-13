@@ -9,7 +9,9 @@ Router.use(tenantLoader());
 const createEvent = (params, body) => {
   const { act } = params;
   const { ent, usr } = body;
-  return EventModel({ act, ent, usr });
+  const event = EventModel({ act, ent, usr });
+  event.validate();
+  return event;
 };
 
 Router.route('/:act')
