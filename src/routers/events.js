@@ -2,8 +2,10 @@ const Router = require('express').Router();
 const { noCache } = require('helmet');
 const httpError = require('http-errors');
 const bodyParser = require('body-parser');
+const UAParser = require('ua-parser-js');
 const tenantLoader = require('../middlewares/tenant-loader');
 const EventModel = require('../models/event');
+const UserAgent = require('../models/user-agent');
 const botDetector = require('../services/bot-detector');
 const { createAppHeader, castAsBoolean } = require('../utils');
 
@@ -18,6 +20,12 @@ Router.use((req, res, next) => {
   next();
 });
 
+/**
+ * @todo Implement this.
+ * @param {Error} error
+ */
+const logError = error => error;
+
 const extractAction = (value) => {
   const parts = value.split('.');
   return { act: parts.shift(), ext: parts.join('.').toLowerCase() || 'json' };
@@ -31,15 +39,25 @@ const handleEvent = (req, res) => {
   const payload = req.method === 'GET' ? req.query : req.body;
   const { ent, usr } = payload;
 
-  // Create the event.
-  const event = EventModel({ act, ent, usr });
+  // Handle user agent.
+  const userAgent = req.get('User-Agent');
+  const agent = UserAgent(UAParser(userAgent));
 
-  // Determine if the event was initiated by a bot.
-  const bot = botDetector(req.get('User-Agent'));
+  // Create the event.
+  const event = EventModel({
+    act,
+    ent,
+    usr,
+    ua: agent.getId(),
+  });
+
+  // Determine if a bot.
+  const bot = botDetector(userAgent);
   if (!bot.detected) {
     // Persist the event.
-    // @todo Add a catch here. Should the response only be handled on success?
-    event.save(res.locals.db);
+    // @todo Add a catch here. Should there always be a successful response?
+    agent.save().catch(logError);
+    event.save(res.locals.db).catch(logError);
   } else {
     // Log the bot activity?
   }

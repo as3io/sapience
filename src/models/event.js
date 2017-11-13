@@ -18,12 +18,14 @@ module.exports = compose({
     ent,
     d,
     usr,
+    ua,
   }) {
     this.id = new ObjectID();
     this.act = castAsString(act).toLowerCase() || undefined;
     this.d = d instanceof Date ? d : new Date();
     this.ent = createModel(ent, Entity);
     this.usr = createModel(usr, Entity);
+    this.ua = castAsString(ua) || undefined;
   },
   methods: {
     /**
