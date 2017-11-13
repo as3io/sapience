@@ -24,6 +24,7 @@
     "express": "^4.16.2",
     "helmet": "^3.9.0",
     "http-errors": "^1.6.2",
+    "lodash": "^4.17.4",
     "mongodb": "^2.2.33",
     "no-case": "^2.3.2"
   }

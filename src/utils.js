@@ -1,4 +1,5 @@
 const noCase = require('no-case');
+const _ = require('lodash/lang');
 const { ObjectID } = require('mongodb');
 const { APP_NAME } = require('./constants');
 
@@ -64,7 +65,9 @@ const canPrepare = v => typeof v === 'object' && !(v instanceof Date) && !(v ins
  */
 exports.prepareForMongo = obj => Object
   .keys(obj)
-  .filter(key => obj[key] !== null && obj[key] !== undefined)
-  .reduce((prep, key) => (canPrepare(obj[key])
-    ? { ...prep, [key]: this.prepareForMongo(obj[key]) }
-    : { ...prep, [key]: obj[key] }), {});
+  .filter(key => !_.isNil(obj[key]) && !_.isNaN(obj[key]))
+  .reduce((prep, key) => {
+    const v = canPrepare(obj[key]) ? this.prepareForMongo(obj[key]) : obj[key];
+    return typeof v === 'object' && _.isEmpty(v) ? prep : { ...prep, [key]: v };
+  }, {});
+
