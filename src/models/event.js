@@ -26,6 +26,9 @@ module.exports = compose({
     this.usr = createModel(usr, Entity);
   },
   methods: {
+    save() {
+      this.validate();
+    },
     /**
      * Validates the event.
      * Requires an identifier (`id`), an action (`act`), a date (`d`) and a valid entity (`ent`).

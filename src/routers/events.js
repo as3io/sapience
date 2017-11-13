@@ -4,12 +4,19 @@ const httpError = require('http-errors');
 const bodyParser = require('body-parser');
 const tenantLoader = require('../middlewares/tenant-loader');
 const EventModel = require('../models/event');
+const botDetector = require('../services/bot-detector');
+const { createAppHeader, castAsBoolean } = require('../utils');
 
 const emptyGif = Buffer.from('R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==', 'base64');
 
 Router.use(noCache());
 Router.use(bodyParser.json());
 Router.use(tenantLoader());
+
+Router.use((req, res, next) => {
+  res.locals.debug = castAsBoolean(req.get(createAppHeader('Debug')));
+  next();
+});
 
 const extractAction = (value) => {
   const parts = value.split('.');
@@ -24,19 +31,34 @@ const handleEvent = (req, res) => {
   const payload = req.method === 'GET' ? req.query : req.body;
   const { ent, usr } = payload;
 
-  // Create the event and persist.
+  // Create the event.
   const event = EventModel({ act, ent, usr });
-  event.validate();
 
+  // Determine if the event was initiated by a bot.
+  const bot = botDetector(req.get('User-Agent'));
+  if (!bot.detected) {
+    // Persist the event.
+    event.save();
+  } else {
+    // Log the bot activity?
+  }
+
+  // Send the response.
+  const response = res.locals.debug ? event : { id: event.id };
+  res.status(201);
   switch (ext) {
     case 'json':
-      return res.json(event);
+      res.json(response);
+      break;
     case 'gif':
       res.set('Content-Type', 'image/gif');
-      return res.send(emptyGif);
+      res.set(createAppHeader('Event-Data'), JSON.stringify(response));
+      res.send(emptyGif);
+      break;
     default:
       throw httpError(406, 'Only `json` and `gif` responses are supported.');
   }
+  // Handle post-process tasks.
 };
 
 Router.route('/:act').post(handleEvent).get(handleEvent);
