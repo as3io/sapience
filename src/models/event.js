@@ -1,4 +1,5 @@
 const compose = require('@stamp/it');
+const { ObjectID } = require('mongodb');
 const Entity = require('./entity');
 const { createModel, castAsString } = require('../utils');
 
@@ -17,6 +18,7 @@ module.exports = compose({
     d,
     usr,
   }) {
+    this.id = new ObjectID();
     this.act = castAsString(act).toLowerCase();
     this.d = d instanceof Date ? d : new Date();
     this.ent = createModel(ent, Entity);
