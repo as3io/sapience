@@ -12,26 +12,22 @@ exports.createModel = (v, Factory) => (v && typeof v === 'object' ? Factory(v) :
 
 /**
  * Casts a value as a string.
- * Empty values will be returned as undefined.
  *
  * @param {string} v
- * @returns {(string|undefined)}
+ * @returns {string}
  */
 exports.castAsString = (v) => {
-  if (v === undefined || v === null || Number.isNaN(v)) return undefined;
-  const cast = String(v).trim();
-  return cast.length ? cast : undefined;
+  if (v === undefined || v === null || Number.isNaN(v)) return '';
+  return String(v).trim();
 };
 
 /**
  * Casts a value as a dasherized string.
- * Empty values will be returned as undefined.
  *
  * @param {string} v
- * @returns {(string|undefined)}
+ * @returns {string}
  */
 exports.castAsDasherized = (v) => {
   const cast = this.castAsString(v);
-  const val = cast ? noCase(cast, null, '-') : cast;
-  return val || undefined;
+  return cast.length ? noCase(cast, null, '-') : cast;
 };

@@ -13,9 +13,9 @@ module.exports = compose({
    * @param {string} opts.n The namespace name (model name).
    */
   init({ z, b, n }) {
-    this.z = castAsDasherized(z);
-    this.b = castAsDasherized(b);
-    this.n = castAsDasherized(n);
+    this.z = castAsDasherized(z) || undefined;
+    this.b = castAsDasherized(b) || undefined;
+    this.n = castAsDasherized(n) || undefined;
   },
   methods: {
     /**

@@ -11,7 +11,7 @@ module.exports = compose({
    * @param {Object} opts.ns The entity namespace.
    */
   init({ id, ns }) {
-    this.id = castAsString(id);
+    this.id = castAsString(id) || undefined;
     const namespace = typeof ns === 'string' ? Namespace.fromString(ns) : ns;
     this.ns = createModel(namespace, Namespace);
   },
