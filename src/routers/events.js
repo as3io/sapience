@@ -20,7 +20,7 @@ Router.use((req, res, next) => {
 
 const extractAction = (value) => {
   const parts = value.split('.');
-  return { act: parts.shift(), ext: parts.join('.') || 'json' };
+  return { act: parts.shift(), ext: parts.join('.').toLowerCase() || 'json' };
 };
 
 const handleEvent = (req, res) => {
