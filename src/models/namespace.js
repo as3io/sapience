@@ -18,14 +18,36 @@ module.exports = compose({
     this.n = castAsDasherized(n);
   },
   methods: {
+    /**
+     * Converts the namespace to a string.
+     * Formatted as zone/base/name. Undefined or empty values are replaced with a `-`.
+     * Given `{ n: undefined, b: foo, n: bar }` would return `-/foo/bar`.
+     *
+     * @return {string}
+     */
     toString() {
       return [this.z || '-', this.b || '-', this.n || '-'].join('/');
     },
+
+    /**
+     * Validates the namespace.
+     * At minimum, a `name` (`n`) must be specified
+     *
+     * @throws {httpError}
+     */
     validate() {
       if (!this.n) throw httpError(422, 'Entity namespaces must contain at least the `name` property.');
     },
   },
   statics: {
+    /**
+     * Converts a stringified namsespace into an object literal.
+     * Given`-/foo/bar` would return `{ n: undefined, b: foo, n: bar }`.
+     * All non-string values of `v` will return undefined.
+     *
+     * @param {string} v The stringified namespace.
+     * @returns {(string|undefined)}
+     */
     fromString(v) {
       const map = { 0: 'z', 1: 'b', 2: 'n' };
       if (typeof v === 'string') {

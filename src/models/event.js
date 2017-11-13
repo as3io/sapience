@@ -26,12 +26,20 @@ module.exports = compose({
     this.usr = createModel(usr, Entity);
   },
   methods: {
+    /**
+     * Validates the event.
+     * Requires an identifier (`id`), an action (`act`), a date (`d`) and a valid entity (`ent`).
+     * If a user (`usr`) is present, it must also be valid.
+     *
+     * @throws {httpError}
+     */
     validate() {
       if (!this.id) throw httpError(422, 'No id was assigned to the event.');
       if (!this.act) throw httpError(422, 'No event action was provided.');
       if (!(this.d instanceof Date)) throw httpError(422, 'No event date was specified.');
       if (!this.ent) throw httpError(422, 'No event entity was specified.');
       this.ent.validate();
+      if (this.usr) this.usr.validate();
     },
   },
 });

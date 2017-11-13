@@ -16,6 +16,12 @@ module.exports = compose({
     this.ns = createModel(namespace, Namespace);
   },
   methods: {
+    /**
+     * Validates the entity.
+     * Requires an identifier (`id`) and a valid namespace (`ns`).
+     *
+     * @throws {httpError}
+     */
     validate() {
       if (!this.id) throw httpError(422, 'No entity identifier was found.');
       if (!this.ns) throw httpError(422, 'No entity namespace was found.');
