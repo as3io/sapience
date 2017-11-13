@@ -46,20 +46,31 @@ Provides a standardized way of namespacing and grouping entities. This methods w
 #### Examples
 
 ### Putting it all Together
-```js
+#### Sample POST Request
+`POST /events/{action}`
+```json
 {
-  act: 'view',
-  ent: {
-    id: '10124317',
-    ns: { n: 'content', b: 'base-platform', z: 'scomm-vspc' },
+	"ent": {
+		"id": 10124317,
+		"ns": {
+			"z": "cygnus-vspc",
+			"b": "base-platform",
+			"n": "content"
+		}
+	},
+	"usr": {
+		"id": "50dc692d577b31d06d000007",
+		"ns": {
+			"z": "www-vehicleservicepros-com",
+			"b": "merrick",
+			"n": "user"
+		}
   },
-  user: {
-    id: 'oidhf03yrhiwe',
-    ns: { n: 'customer', b: 'omeda', z: 'vsp' },
-  },
-  ctxt: { }, // @todo Should this contain related entities? Custom key/values? Both?
+  "ctxt": {} // @todo Should this contain related entities? Custom key/values? Both?
 }
 ```
+#### Sample GET Request
+`GET /events/{action}/?ent[id]=10124317&ent[ns]=cygnus-vspc/base-platform/content`
 ---
 
 ## Tenant Structure
