@@ -1,4 +1,13 @@
 const noCase = require('no-case');
+const { APP_NAME } = require('./constants');
+
+/**
+ * Creates a namespaced header value for this application.
+ *
+ * @param {string} header The name of the header.
+ * @return {string} The namespaced header value.
+ */
+exports.createAppHeader = header => `X-${APP_NAME}-${header}`;
 
 /**
  * Casts a model object from the provided object and factory.
@@ -13,7 +22,7 @@ exports.createModel = (v, Factory) => (v && typeof v === 'object' ? Factory(v) :
 /**
  * Casts a value as a string.
  *
- * @param {string} v
+ * @param {*} v
  * @returns {string}
  */
 exports.castAsString = (v) => {
@@ -24,10 +33,21 @@ exports.castAsString = (v) => {
 /**
  * Casts a value as a dasherized string.
  *
- * @param {string} v
+ * @param {*} v
  * @returns {string}
  */
 exports.castAsDasherized = (v) => {
   const cast = this.castAsString(v);
   return cast.length ? noCase(cast, null, '-') : cast;
+};
+
+/**
+ * Casts a value as a boolean.
+ *
+ * @param {*} v
+ * @returns {boolean}
+ */
+exports.castAsBoolean = (v) => {
+  if (v === '0' || v === 'false') return false;
+  return Boolean(v);
 };
