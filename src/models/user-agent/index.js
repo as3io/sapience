@@ -1,5 +1,6 @@
 const { hash } = require('node-object-hash')({ alg: 'md5', enc: 'base64' });
 const compose = require('@stamp/it');
+const base64url = require('base64url');
 const { DB_PREFIX } = require('../../constants');
 const { createModel, prepareForMongo } = require('../../utils');
 const Browser = require('./browser');
@@ -34,7 +35,7 @@ module.exports = compose({
     },
     getId() {
       const prepped = prepareForMongo({ ...this });
-      return hash(prepped);
+      return base64url.fromBase64(hash(prepped));
     },
     /**
      * Converts the user agent to database format.
@@ -43,7 +44,7 @@ module.exports = compose({
      */
     toDb() {
       const prepped = prepareForMongo({ ...this });
-      const id = hash(prepped);
+      const id = base64url.fromBase64(hash(prepped));
       return { ...prepped, _id: id };
     },
   },
