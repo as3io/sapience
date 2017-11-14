@@ -1,4 +1,4 @@
-const { hash } = require('node-object-hash')({ alg: 'md5', enc: 'base64' });
+const { hash } = require('node-object-hash')({ alg: 'md5', enc: 'base64', coerce: false });
 const compose = require('@stamp/it');
 const base64url = require('base64url');
 const { DB_PREFIX } = require('../../constants');
