@@ -25,7 +25,11 @@ module.exports = compose({
     this.d = d instanceof Date ? d : new Date();
     this.ent = createModel(ent, Entity);
     this.usr = createModel(usr, Entity);
-    this.ua = castAsString(ua) || undefined;
+    if (ua && typeof ua === 'object' && ua.id) {
+      this.ua = ua.id;
+    } else {
+      this.ua = castAsString(ua) || undefined;
+    }
   },
   methods: {
     /**

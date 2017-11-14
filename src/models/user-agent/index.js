@@ -23,6 +23,7 @@ module.exports = compose({
     this.eng = createModel(engine, Engine);
     this.os = createModel(os, OS);
     this.dev = createModel(device, Device);
+    this.id = base64url.fromBase64(hash({ ...this }));
   },
   methods: {
     /**
@@ -33,19 +34,15 @@ module.exports = compose({
       const doc = this.toDb();
       return coll.updateOneAsync({ _id: doc._id }, { $setOnInsert: doc }, { upsert: true });
     },
-    getId() {
-      const prepped = prepareForMongo({ ...this });
-      return base64url.fromBase64(hash(prepped));
-    },
     /**
-     * Converts the user agent to database format.
+     * Converts the event to database format.
      *
      * @returns {object}
      */
     toDb() {
-      const prepped = prepareForMongo({ ...this });
-      const id = base64url.fromBase64(hash(prepped));
-      return { ...prepped, _id: id };
+      const obj = { ...this, _id: this.id };
+      delete obj.id;
+      return prepareForMongo(obj);
     },
   },
 });

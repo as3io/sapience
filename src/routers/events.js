@@ -41,14 +41,14 @@ const handleEvent = (req, res) => {
 
   // Handle user agent.
   const userAgent = req.get('User-Agent');
-  const agent = UserAgent(UAParser(userAgent));
+  const ua = UserAgent(UAParser(userAgent));
 
   // Create the event.
   const event = EventModel({
     act,
     ent,
     usr,
-    ua: agent.getId(),
+    ua,
   });
 
   // Determine if a bot.
@@ -56,7 +56,7 @@ const handleEvent = (req, res) => {
   if (!bot.detected) {
     // Persist the event.
     // @todo Add a catch here. Should there always be a successful response?
-    agent.save().catch(logError);
+    ua.save().catch(logError);
     event.save(res.locals.db).catch(logError);
   } else {
     // Log the bot activity?
