@@ -43,12 +43,14 @@ const handleEvent = (req, res) => {
   const userAgent = req.get('User-Agent');
   const ua = UserAgent(UAParser(userAgent));
 
+  console.info(ua);
+
   // Create the event.
   const event = EventModel({
     act,
     ent,
     usr,
-    ua,
+    // ua,
   });
 
   // Determine if a bot.

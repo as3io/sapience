@@ -27,5 +27,9 @@ module.exports = compose({
       if (!this.ns) throw httpError(422, 'No entity namespace was found.');
       this.ns.validate();
     },
+    flatten() {
+      this.validate();
+      return { ...this, ns: this.ns.toString() };
+    },
   },
 });

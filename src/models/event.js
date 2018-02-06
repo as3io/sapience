@@ -49,9 +49,16 @@ module.exports = compose({
      * @returns {object}
      */
     toDb() {
-      const obj = { ...this, _id: this.id };
+      const usr = (this.usr) ? this.usr.flatten() : undefined;
+      const obj = {
+        ...this,
+        _id: this.id,
+        ent: this.ent.flatten(),
+        usr,
+      };
       delete obj.id;
-      return prepareForMongo(obj);
+      return obj;
+      // return prepareForMongo(obj);
     },
 
     /**

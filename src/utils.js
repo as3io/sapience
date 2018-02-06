@@ -1,4 +1,5 @@
 const noCase = require('no-case');
+const crypto = require('crypto');
 const _ = require('lodash/lang');
 const { ObjectID } = require('mongodb');
 const { APP_NAME } = require('./constants');
@@ -52,6 +53,16 @@ exports.castAsDasherized = (v) => {
 exports.castAsBoolean = (v) => {
   if (v === '0' || v === 'false') return false;
   return Boolean(v);
+};
+
+exports.hashObject = (obj, { algo = 'md5', digest = 'hex' } = {}) => {
+  const { stringify, parse } = JSON;
+  const sort = o => Object.keys(o).sort().reduce((n, k) => {
+    const v = o[k] && typeof o[k] === 'object' ? sort(o[k]) : o[k];
+    return { ...n, [k]: v };
+  }, {});
+  const str = stringify(sort(parse(stringify(obj))));
+  return crypto.createHash(algo).update(str).digest();
 };
 
 const canPrepare = v => typeof v === 'object' && !(v instanceof Date) && !(v instanceof ObjectID);

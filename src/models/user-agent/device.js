@@ -1,4 +1,5 @@
 const compose = require('@stamp/it');
+const { isNil } = require('lodash/lang');
 
 module.exports = compose({
   /**

@@ -6,7 +6,11 @@ const mongodb = require('./mongodb');
 const pkg = require('../package.json');
 
 // Connect to database.
-mongodb.use('default', { url: 'mongodb://localhost:27017/sapience', options: { w: 0, j: false, appname: pkg.name }, connect: true });
+mongodb.use('default', {
+  url: 'mongodb://localhost:27017/sapience',
+  options: { w: 0, appname: pkg.name, ignoreUndefined: true },
+  connect: true,
+});
 
 const app = express();
 

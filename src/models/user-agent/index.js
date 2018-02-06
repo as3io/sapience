@@ -1,8 +1,8 @@
-const { hash } = require('node-object-hash')({ alg: 'md5', enc: 'base64', coerce: false });
+// const { hash } = require('node-object-hash')({ alg: 'md5', enc: 'base64', coerce: false });
 const compose = require('@stamp/it');
-const base64url = require('base64url');
+const { Binary } = require('mongodb');
 const { DB_PREFIX } = require('../../constants');
-const { createModel, prepareForMongo } = require('../../utils');
+const { createModel, hashObject } = require('../../utils');
 const Browser = require('./browser');
 const Device = require('./device');
 const Engine = require('./engine');
@@ -22,8 +22,8 @@ module.exports = compose({
     this.br = createModel(browser, Browser);
     this.eng = createModel(engine, Engine);
     this.os = createModel(os, OS);
-    this.dev = createModel(device, Device);
-    this.id = base64url.fromBase64(hash({ ...this }));
+    this.dev = createModel(device, Device); // This should undefine if empty.
+    this.id = new Binary(hashObject(this), Binary.SUBTYPE_MD5);
   },
   methods: {
     /**
@@ -42,7 +42,8 @@ module.exports = compose({
     toDb() {
       const obj = { ...this, _id: this.id };
       delete obj.id;
-      return prepareForMongo(obj);
+      return obj;
+      // return prepareForMongo(obj);
     },
   },
 });

@@ -1,0 +1,91 @@
+<html>
+  <head>
+    <title>Link Test</title>
+    <script>
+      (function(document) {
+        document.addEventListener('DOMContentLoaded', (event) => {
+          console.info('DOMContentLoaded');
+          const list = document.querySelectorAll('a[data-sap="decorate"]');
+          // We can either manipulate these links now, or when clicked?
+          const usr = 'sap.usr=7444C1917023I6R*vsp.omeda.customer';
+          for (let i = 0; i < list.length; i = i + 1) {
+            const item = list[i];
+            // @todo Need to parse this list to prevent duplicates!
+            if (item.search) {
+              item.search = `${item.search}&${usr}`;
+            } else {
+              item.search = `?${usr}`;
+            }
+            console.info(item.search);
+          };
+
+          // Observer.
+          const target = document.getElementsByTagName('body')[0];
+          const observer = new MutationObserver((mutations) => {
+            // console.warn('here');
+            mutations.forEach((mutation) => {
+              // const list = mutation.addedNodes.querySelectorAll('a[data-sap="decorate"]')
+              for (let i = 0; i < mutation.addedNodes.length; i = i + 1) {
+                const element = mutation.addedNodes[i];
+                const list = element.querySelectorAll('a[data-sap="decorate"]');
+                for (let n = 0; n < list.length; n = n + 1) {
+                  const item = list[i];
+                  // @todo Need to parse this list to prevent duplicates!
+                  if (item.search) {
+                    item.search = `${item.search}&${usr}`;
+                  } else {
+                    item.search = `?${usr}`;
+                  }
+                  console.info(item.search);
+                }
+              }
+            });
+          });
+          observer.observe(document, { childList: true, subtree: true });
+
+        });
+      })(document);
+    </script>
+  </head>
+  <body>
+    <ul>
+      <li><a href="http://www.google.com">Google</a></li>
+      <li><a href="http://www.microsoft.com" data-sap="decorate">Microsoft (Tracked)</a></li>
+      <li><a href="http://www.ien.com?foo=bar&amp;dill=bag" data-sap="decorate" target="_blank" rel="noopener noreferrer">IEN (Tracked, New Window)</a></li>
+      <li><a href="http://www.microsoft.com" data-sap="decorate" target="_blank" rel="noopener noreferrer"><span><em>Microsoft (Tracked w/Inner Elements, New Window)</em></span></a></li>
+    </ul>
+    <ul>
+      <li id="added-onload"></li>
+    </ul>
+
+    <button id="add-link">Add Link</button>
+
+    <ul id="tray"></ul>
+    <script>
+      (function(document) {
+        const createLink = (href, text) => {
+          const ele = document.createElement('a');
+          ele.setAttribute('href', href);
+          ele.setAttribute('data-sap', 'decorate');
+          ele.append(document.createTextNode(text));
+          return ele;
+        };
+
+        const link = createLink('http://www.southcomm.com', 'Southcomm (Tracked, Added)')
+        document.getElementById('added-onload').append(link);
+        console.info(link);
+
+        const button = document.getElementById('add-link');
+        button.onclick = () => {
+          console.info('Button clicked!')
+          const li = document.createElement('li');
+          const link = createLink('http://www.mozilla.org', 'Mozilla (Tracked, Added from Click)');
+          li.append(link);
+          document.getElementById('tray').append(li);
+          console.info('Element inserted!')
+        };
+
+      })(document);
+    </script>
+  </body>
+</html>
